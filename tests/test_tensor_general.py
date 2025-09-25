@@ -321,6 +321,9 @@ def test_two_grad_broadcast(
 
     # broadcast check
     grad_check(tensor_fn, t1.sum(0), t2)
+    print("Test two grad")
+    print(t1)
+    print(t2)
     grad_check(tensor_fn, t1, t2.sum(0))
 
 
@@ -376,4 +379,10 @@ def test_bmm(backend: str, data: DataObject) -> None:
         .sum(2)
         .view(D, A, C)
     )
+
+    print("Test bmm")
+    print(a)
+    print(b)
+    print(c)
+    print(c2)
     assert_close_tensor(c, c2)

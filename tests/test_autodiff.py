@@ -69,12 +69,11 @@ def test_chain_rule3() -> None:
     var = minitorch.Scalar(5)
 
     y = Function2.apply(constant, var)
-
     back = y.chain_rule(d_output=5)
     back = list(back)
     assert len(back) == 2
     variable, deriv = back[1]
-    # assert variable.name == var.name
+    assert variable.name == var.name
     assert deriv == 5 * 10
 
 
@@ -89,10 +88,10 @@ def test_chain_rule4() -> None:
     back = list(back)
     assert len(back) == 2
     variable, deriv = back[0]
-    # assert variable.name == var1.name
+    assert variable.name == var1.name
     assert deriv == 5 * (10 + 1)
     variable, deriv = back[1]
-    # assert variable.name == var2.name
+    assert variable.name == var2.name
     assert deriv == 5 * 5
 
 

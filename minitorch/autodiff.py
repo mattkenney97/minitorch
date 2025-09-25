@@ -23,7 +23,12 @@ def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) 
         An approximation of $f'_i(x_0, \ldots, x_{n-1})$
     """
     # TODO: Implement for Task 1.1.
-    raise NotImplementedError('Need to implement for Task 1.1')
+    vals_forward = list(vals)
+    vals_backward = list(vals)
+    vals_forward[arg] = vals_forward[arg] + (epsilon / 2)
+    vals_backward[arg] = vals_forward[arg] - (epsilon / 2)
+
+    return (f(*vals_forward) - f(*vals_backward)) / (epsilon / 2)
 
 
 variable_count = 1
@@ -62,7 +67,24 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
         Non-constant Variables in topological order starting from the right.
     """
     # TODO: Implement for Task 1.4.
-    raise NotImplementedError('Need to implement for Task 1.4')
+    seen = set()
+    result = []
+
+    def visit(node: Variable, res: list):
+        if node.name in seen:
+            return res
+
+        # if not node.is_constant:
+        if node.history is not None:
+            for parent in node.parents:
+                res = visit(parent, res)
+        res = [node] + res
+        seen.add(node.name)
+        return res
+
+    result = visit(variable, result)
+
+    return result
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
@@ -77,7 +99,19 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
     # TODO: Implement for Task 1.4.
-    raise NotImplementedError('Need to implement for Task 1.4')
+    scalars = topological_sort(variable)
+
+    deriv_dict = {variable.name: deriv}
+    for scalar in scalars:
+        if scalar.is_leaf():
+            scalar.accumulate_derivative(deriv_dict[scalar.name])
+        elif not scalar.is_constant():
+            derivs = scalar.chain_rule(deriv_dict[scalar.name])
+            for d in derivs:
+                if d[0].name in deriv_dict:
+                    deriv_dict[d[0].name] += d[1]
+                else:
+                    deriv_dict[d[0].name] = d[1]
 
 
 @dataclass
