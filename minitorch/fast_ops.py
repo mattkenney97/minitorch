@@ -330,21 +330,6 @@ def _tensor_matrix_multiply(
     b_batch_stride = b_strides[0] if b_shape[0] > 1 else 0
 
     # TODO: Implement for Task 3.2.
-
-    # for out_pos in prange(len(out)):
-    #     out_ind = (int(out_pos / out_shape[-1] % out_shape[-2]), int(out_pos % out_shape[-1]))
-    #     batch_ind = int(out_pos / (out_shape[-1] * out_shape[-2]) % out_shape[0])
-
-    #     a_pos_base = out_ind[0] * a_strides[-2] + batch_ind * a_strides[0]
-    #     b_pos_base = out_ind[1] * b_strides[-1]
-        
-    #     val = 0.0
-    #     for i in range(a_shape[-1]):  
-    #         val += a_storage[a_pos_base] * b_storage[b_pos_base]
-    #         a_pos_base += int(a_strides[-1])
-    #         b_pos_base += int(b_strides[-2])
-
-    #     out[out_pos] = val
     for batch in prange(out_shape[0]):
         a_batch_off = batch * a_strides[0] if a_shape[0] > 1 else 0
         b_batch_off = batch * b_strides[0] if b_shape[0] > 1 else 0

@@ -65,14 +65,23 @@ def to_index(ordinal: int, shape: Shape, out_index: OutIndex) -> None:
     """
     # TODO: Implement for Task 2.1.
 
+    # denom = 1
+    # for i in range(len(shape)):
+    #     dim = shape[-1-i]
+    #     if i == 0:
+    #         out_index[-(i + 1)] = int(ordinal % dim)
+    #         denom *= dim
+    #     else: 
+    #         out_index[-(i + 1)] = int((ordinal / denom) % dim)
+    #         denom *= dim
     denom = 1
     for i in range(len(shape)):
         dim = shape[-1-i]
         if i == 0:
-            out_index[-(i + 1)] = int(ordinal % dim)
+            out_index[len(shape) - 1 - i] = int(ordinal % dim)
             denom *= dim
         else: 
-            out_index[-(i + 1)] = int((ordinal / denom) % dim)
+            out_index[len(shape) - 1 - i] = int((ordinal / denom) % dim)
             denom *= dim
 
 
